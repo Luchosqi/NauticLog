@@ -16,6 +16,10 @@ public abstract class Persona {
 
     }
 
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
     @Override
     public String toString() {
         return "Persona{" +

@@ -1,54 +1,128 @@
 package org.example.PDF;
 
+import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import org.example.Inventario.Insumo;
+import org.example.MaquinasBarcos.Barco;
 import org.example.MaquinasBarcos.Maquina;
+import org.example.Persona.Cliente;
+import org.example.Persona.Mecanico;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
 
 public class Boleta {
-    String numeroFactura="N° 1";
+    private int numeroFactura;
+    private final String encabezadoNFactura="N°:";
     LocalDate fecha;
 
-    public void generarFactura(Maquina maquina) throws FileNotFoundException {
-        String carpeta = "facturas";
-        crearCarpetaSiNoExiste(carpeta);
-
-        String nombreBase = "factura_De_" + maquina.getNombre() + "_" + LocalDate.now();
-        String extension = "pdf";
-
-        String path = generarNombreDisponible(carpeta, nombreBase, extension);
-
-        PdfWriter pdfWriter = new PdfWriter(path);
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        pdfDocument.setDefaultPageSize(PageSize.A4);
-        Document document = new Document(pdfDocument);
-        float twocol = 285f;
-        float twocol150=twocol*150f;
-        float twocolumnWidth[]={twocol150,twocol};
-        Table table = new Table(twocolumnWidth);
-        table.addCell(new Cell().add("Factura").setFontSize(20f).setBorder(Border.NO_BORDER).setBold());
-        Table nestedTabe = new Table(new float []{twocol/2,twocol/2});
-        nestedTabe.addCell(new Cell().add(numeroFactura).setBold().setBorder(Border.NO_BORDER));
-        nestedTabe.addCell(new Cell().add(nombreBase).setBold().setBorder(Border.NO_BORDER));
-        nestedTabe.addCell(new Cell().add("Fecha:").setBold().setBold().setBorder(Border.NO_BORDER));
-        nestedTabe.addCell(new Cell().add(String.valueOf(fecha.now())).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(nestedTabe).setBorder(Border.NO_BORDER));
-        document.add(table);
 
 
+    public int generarNumeroFactura(){
+        Random random = new Random();
+        numeroFactura = new Random().nextInt(800_000) + 100_000;
+        return numeroFactura;
+    }
 
-        document.close();
+    public void generarFactura(Mecanico mecanico, Barco barco, Cliente cliente, List<Insumo> insumos) {
+        try {
+            String carpeta = "facturas";
+            crearCarpetaSiNoExiste(carpeta);
 
-        System.out.println("PDF generado en: " + path);
+            String nombreBase = "factura_" + mecanico.getNombreEmpresa() + "_" + LocalDate.now();
+            String extension = "pdf";
+            String path = generarNombreDisponible(carpeta, nombreBase, extension);
+
+            PdfWriter writer = new PdfWriter(path);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document doc = new Document(pdf, PageSize.A4);
+            doc.setMargins(20, 20, 20, 20);
+
+
+            Paragraph header = new Paragraph("ASESORIAS E INVERSIONES " + mecanico.getNombreEmpresa().toUpperCase()).setBold().setFontSize(14);
+            Paragraph giro = new Paragraph("Giro: Reparación de Barcos y Asesoría Técnica Mecánica Naval");
+            Paragraph direccion = new Paragraph("Dirección: "+  mecanico.getDireccionEmpresa());
+            Paragraph contacto = new Paragraph("Email: " + mecanico.getCorreoElectronico());
+            Paragraph rut = new Paragraph("R.U.T.: " + mecanico.getRutEmpresa()).setBold().setFontSize(12).setFontColor(Color.RED);
+
+            doc.add(header);
+            doc.add(giro);
+            doc.add(direccion);
+            doc.add(contacto);
+            doc.add(rut);
+            doc.add(new Paragraph("Factura Electrónica N° " + generarNumeroFactura()).setBold());
+            doc.add(new Paragraph("Fecha Emisión: " + LocalDate.now().toString()));
+            doc.add(new Paragraph("\n"));
+
+
+            doc.add(new Paragraph("SEÑOR(ES): " + cliente.toString()));
+            doc.add(new Paragraph("CIUDAD: - COMUNA: - TIPO DE COMPRA: Directa"));
+            doc.add(new Paragraph("\n"));
+
+
+            float[] columnWidths = {80f, 200f, 60f, 60f, 60f, 60f, 60f};
+            Table insumoTable = new Table(columnWidths);
+            insumoTable.setWidthPercent(100);
+            String[] headers = {"Código", "Descripción", "Cantidad", "Precio", "% Imp. Adic.", "% Desc.", "Valor"};
+
+            for (String h : headers) {
+                insumoTable.addHeaderCell(new Cell().add(h).setBold().setBackgroundColor(Color.LIGHT_GRAY));
+            }
+
+            double neto = 0;
+            for (Insumo insumo : insumos) {
+                double precio = insumo.calcularPrecioBoleta();
+                double valor = precio; // cantidad y descuento fijos por ahora
+
+                insumoTable.addCell("COD-" + insumo.getNombre().substring(0, 2).toUpperCase());
+                insumoTable.addCell(insumo.getNombre() + " - " + insumo.toString());
+                insumoTable.addCell("1 UNID");
+                insumoTable.addCell(String.format("%.2f", precio));
+                insumoTable.addCell("0");
+                insumoTable.addCell("0");
+                insumoTable.addCell(String.format("%.2f", valor));
+
+                neto += valor;
+            }
+
+            doc.add(insumoTable);
+            doc.add(new Paragraph("\n"));
+
+
+            double iva = neto * 0.19;
+            double total = neto + iva;
+
+            doc.add(new Paragraph(String.format("MONTO NETO          $ %.3f", neto)).setBold());
+            doc.add(new Paragraph(String.format("I.V.A 19%%           $ %.3f", iva)).setBold());
+            doc.add(new Paragraph("IMPUESTO ADICIONAL  $ 0").setBold());
+            doc.add(new Paragraph(String.format("TOTAL               $ %.3f", total)).setBold().setFontSize(13));
+
+            // 5. PIE DE FIRMA
+            doc.add(new Paragraph("\n\n"));
+            doc.add(new Paragraph("Nombre: _____________________   RUT: ___________   Fecha: ______   Recinto: ______   Firma: ____________"));
+            doc.add(new Paragraph("“El acuse de recibo que se declara en este acto [...] han sido recibido(s)”").setFontSize(9).setItalic());
+            doc.add(new Paragraph("CEDIBLE").setFontColor(Color.RED).setBold().setFontSize(10));
+
+            doc.close();
+            System.out.println("Factura generada correctamente en: " + path);
+
+        } catch (Exception e) {
+            System.err.println("Error al generar la factura: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void crearCarpetaSiNoExiste(String carpeta) {
