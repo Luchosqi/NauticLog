@@ -1,39 +1,34 @@
 package org.example.PDF;
 
-import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.border.Border;
-import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+
 import org.example.Inventario.Insumo;
 import org.example.MaquinasBarcos.Barco;
-import org.example.MaquinasBarcos.Maquina;
 import org.example.Persona.Cliente;
 import org.example.Persona.Mecanico;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+import static com.itextpdf.kernel.pdf.PdfName.Color;
+
 public class Boleta {
     private int numeroFactura;
-    private final String encabezadoNFactura="N°:";
+    private final String encabezadoNFactura = "N°:";
     LocalDate fecha;
 
-
-
-    public int generarNumeroFactura(){
+    public int generarNumeroFactura() {
         Random random = new Random();
-        numeroFactura = new Random().nextInt(800_000) + 100_000;
+        numeroFactura = random.nextInt(800_000) + 100_000;
         return numeroFactura;
     }
 
@@ -51,35 +46,27 @@ public class Boleta {
             Document doc = new Document(pdf, PageSize.A4);
             doc.setMargins(20, 20, 20, 20);
 
+            doc.add(new Paragraph("ASESORIAS E INVERSIONES " + mecanico.getNombreEmpresa().toUpperCase()).setBold().setFontSize(14));
+            doc.add(new Paragraph("Giro: Reparación de Barcos y Asesoría Técnica Mecánica Naval"));
+            doc.add(new Paragraph("Dirección: " + mecanico.getDireccionEmpresa()));
+            doc.add(new Paragraph("Email: " + mecanico.getCorreoElectronico()));
+            doc.add(new Paragraph("R.U.T.: " + mecanico.getRutEmpresa()).setBold().setFontSize(12).setFontColor(ColorConstants.RED));
 
-            Paragraph header = new Paragraph("ASESORIAS E INVERSIONES " + mecanico.getNombreEmpresa().toUpperCase()).setBold().setFontSize(14);
-            Paragraph giro = new Paragraph("Giro: Reparación de Barcos y Asesoría Técnica Mecánica Naval");
-            Paragraph direccion = new Paragraph("Dirección: "+  mecanico.getDireccionEmpresa());
-            Paragraph contacto = new Paragraph("Email: " + mecanico.getCorreoElectronico());
-            Paragraph rut = new Paragraph("R.U.T.: " + mecanico.getRutEmpresa()).setBold().setFontSize(12).setFontColor(Color.RED);
-
-            doc.add(header);
-            doc.add(giro);
-            doc.add(direccion);
-            doc.add(contacto);
-            doc.add(rut);
             doc.add(new Paragraph("Factura Electrónica N° " + generarNumeroFactura()).setBold());
             doc.add(new Paragraph("Fecha Emisión: " + LocalDate.now().toString()));
             doc.add(new Paragraph("\n"));
-
 
             doc.add(new Paragraph("SEÑOR(ES): " + cliente.toString()));
             doc.add(new Paragraph("CIUDAD: - COMUNA: - TIPO DE COMPRA: Directa"));
             doc.add(new Paragraph("\n"));
 
-
             float[] columnWidths = {80f, 200f, 60f, 60f, 60f, 60f, 60f};
             Table insumoTable = new Table(columnWidths);
-            insumoTable.setWidthPercent(100);
+            insumoTable.setWidth(100);
             String[] headers = {"Código", "Descripción", "Cantidad", "Precio", "% Imp. Adic.", "% Desc.", "Valor"};
 
             for (String h : headers) {
-                insumoTable.addHeaderCell(new Cell().add(h).setBold().setBackgroundColor(Color.LIGHT_GRAY));
+                insumoTable.addHeaderCell(new Cell().add(new Paragraph(h)).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
             }
 
             double neto = 0;
@@ -101,7 +88,6 @@ public class Boleta {
             doc.add(insumoTable);
             doc.add(new Paragraph("\n"));
 
-
             double iva = neto * 0.19;
             double total = neto + iva;
 
@@ -110,11 +96,10 @@ public class Boleta {
             doc.add(new Paragraph("IMPUESTO ADICIONAL  $ 0").setBold());
             doc.add(new Paragraph(String.format("TOTAL               $ %.3f", total)).setBold().setFontSize(13));
 
-            // 5. PIE DE FIRMA
             doc.add(new Paragraph("\n\n"));
             doc.add(new Paragraph("Nombre: _____________________   RUT: ___________   Fecha: ______   Recinto: ______   Firma: ____________"));
             doc.add(new Paragraph("“El acuse de recibo que se declara en este acto [...] han sido recibido(s)”").setFontSize(9).setItalic());
-            doc.add(new Paragraph("CEDIBLE").setFontColor(Color.RED).setBold().setFontSize(10));
+            doc.add(new Paragraph("CEDIBLE").setFontColor(ColorConstants.RED).setBold().setFontSize(10));
 
             doc.close();
             System.out.println("Factura generada correctamente en: " + path);

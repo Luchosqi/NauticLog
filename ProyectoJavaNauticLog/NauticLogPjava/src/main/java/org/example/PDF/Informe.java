@@ -3,14 +3,16 @@ package org.example.PDF;
 import org.example.Inventario.Insumo;
 import org.example.MaquinasBarcos.Maquina;
 
+
 import java.util.*;
 
-public class Informe {
+public class Informe{
 
     private Maquina maquina;
     private Collection<Insumo> listaInsumos;
     private String titulo;
     String path;
+
 
     public String getTitulo() {
         return titulo;
@@ -34,7 +36,7 @@ public class Informe {
 
     public void agregarProductos(Insumo insumo) {
         listaInsumos.add(insumo);
-        System.out.println(insumo.getNombre()+" Insumo Agregado");
+        System.out.println(insumo.getNombre() + " Insumo Agregado");
     }
 
     public void eliminarProductos(String nombre) {
@@ -47,11 +49,11 @@ public class Informe {
     }
 
     public void buscarProductos(String nombre) {
-       for (Insumo insumo : listaInsumos) {
-           if (insumo.getNombre().equals(nombre)) {
-               System.out.println(insumo.toString());
-           }
-       }
+        for (Insumo insumo : listaInsumos) {
+            if (insumo.getNombre().equals(nombre)) {
+                System.out.println(insumo.toString());
+            }
+        }
     }
 
     public void listarProductos() {
@@ -63,5 +65,5 @@ public class Informe {
             }
         }
     }
-
 }
+
