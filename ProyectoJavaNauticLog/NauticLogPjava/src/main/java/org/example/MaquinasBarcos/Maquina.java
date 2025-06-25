@@ -14,11 +14,11 @@ public abstract class Maquina implements Historial {
     private Collection<Boleta> listaFacturas;
 
 
-    public Maquina(Collection<Informe> listaInformes, Collection<Motor> motores, String nombre, Collection<Boleta> boletas) {
-        this.listaInformes = listaInformes;
-        this.motores = motores;
+    public Maquina(String nombre) {
+        this.listaInformes = new ArrayList<>();
+        this.motores = new ArrayList<>();
         this.nombre = nombre;
-        this.listaFacturas = boletas;
+        this.listaFacturas = new ArrayList<>();
     }
 
 

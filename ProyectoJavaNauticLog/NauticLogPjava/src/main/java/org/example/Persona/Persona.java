@@ -28,4 +28,12 @@ public abstract class Persona {
                 ", numeroTelefonico='" + numeroTelefonico + '\'' +
                 '}';
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getNumeroTelefonico() {
+        return numeroTelefonico;
+    }
 }

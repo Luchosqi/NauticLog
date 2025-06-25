@@ -48,4 +48,9 @@ public class Cliente extends Persona {
                 "listaBarcos=" + listaBarcos +
                 '}';
     }
+
+    public Collection<Maquina> getListaBarcos() {
+        return listaBarcos;
+    }
+
 }
