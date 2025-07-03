@@ -5,7 +5,7 @@ import org.example.Persona.Cliente;
 
 import java.util.Collection;
 
-public class BarcoFactory extends CreadorMaquinas {
+public class BarcoFactory extends CreadorMaquina {
 
     private Cliente dueño;
     private String modelo;
