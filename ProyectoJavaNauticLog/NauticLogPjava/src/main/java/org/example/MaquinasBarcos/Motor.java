@@ -18,6 +18,7 @@ public class Motor {
         this.rpmMotor = rpmMotor;
     }
 
+
     public String getModelo() {
         return modelo;
     }

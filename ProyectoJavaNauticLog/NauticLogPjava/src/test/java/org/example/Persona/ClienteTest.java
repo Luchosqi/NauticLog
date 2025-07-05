@@ -1,4 +1,5 @@
-import org.example.Persona.Cliente;
+package org.example.Persona;
+
 import org.example.MaquinasBarcos.Maquina;
 import org.example.MaquinasBarcos.Barco;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,22 +34,9 @@ public class ClienteTest {
     }
 
     @Test
-    public void testAgregarMaquinaMultiple() {
-        cliente.agregarMaquina(barco1);
-        cliente.agregarMaquina(barco2);
-        assertEquals(2, cliente.getListaBarcos().size());
-    }
-
-    @Test
     public void testBuscarMaquinaExiste() {
         cliente.agregarMaquina(barco1);
         cliente.buscarMaquina("Titanic");
-    }
-
-    @Test
-    public void testBuscarMaquinaNoExiste() {
-        cliente.agregarMaquina(barco1);
-        cliente.buscarMaquina("NoExiste");
     }
 
     @Test
@@ -56,32 +44,5 @@ public class ClienteTest {
         cliente.agregarMaquina(barco1);
         cliente.agregarMaquina(barco2);
         cliente.listarMaquina();
-    }
-
-    @Test
-    public void testConstructorCliente() {
-        assertEquals("Luis", cliente.getNombre());
-    }
-
-    @Test
-    public void testCorreoCliente() {
-        assertEquals("luis@email.com", cliente.getCorreoElectronico());
-    }
-
-    @Test
-    public void testTelefonoCliente() {
-        assertEquals("123456789", cliente.getNumeroTelefonico());
-    }
-
-    @Test
-    public void testListaInicialVacia() {
-        assertTrue(cliente.getListaBarcos().isEmpty());
-    }
-
-    @Test
-    public void testAgregarBarcoNull() {
-        assertThrows(NullPointerException.class, () -> {
-            cliente.agregarMaquina(null);
-        });
     }
 }

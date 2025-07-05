@@ -13,6 +13,9 @@ public class Informe{
     private String titulo;
     String path;
 
+    public Informe(String titulo) {
+        this.titulo = titulo;
+    }
 
     public String getTitulo() {
         return titulo;

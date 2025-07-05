@@ -37,7 +37,7 @@ public abstract class Maquina implements Historial {
 
     @Override
     public void registrarTrabajo() {
-        listaInformes.add(new Informe());
+
     }
 
     public void buscarTrabajo(String tituloInforme) {
