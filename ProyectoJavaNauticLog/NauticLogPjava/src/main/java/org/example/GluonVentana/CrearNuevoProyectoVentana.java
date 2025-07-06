@@ -20,11 +20,9 @@ public class CrearNuevoProyectoVentana {
 
     @FXML
     private void volverAlMenu() {
-        // Cierra la ventana actual
         Stage actual = (Stage) cancelarButton.getScene().getWindow();
         actual.close();
 
-        // Vuelve al menú principal
         app.interfazPrincipal(stageAnterior);
     }
 }

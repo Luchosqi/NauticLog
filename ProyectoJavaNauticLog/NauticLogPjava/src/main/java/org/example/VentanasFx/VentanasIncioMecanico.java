@@ -14,6 +14,7 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.example.GluonVentana.CrearNuevoProyectoVentana;
+import org.example.Persona.Mecanico;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,15 +40,21 @@ public class VentanasIncioMecanico extends Application {
 
         TextField nombre = new TextField();
         nombre.setPromptText("Nombre de usuario");
+        String nombreMecanico = nombre.getText();
 
         TextField rut = new TextField();
         rut.setPromptText("Rut");
+        String rutMecanico = rut.getText();
 
         TextField correo = new TextField();
         correo.setPromptText("Correo electrónico");
+        String correoMecanico = correo.getText();
 
         TextField celular = new TextField();
         celular.setPromptText("Celular");
+        String celularMecanico = celular.getText();
+
+        Mecanico mecanicoPersona = new Mecanico(nombreMecanico,correoMecanico,celularMecanico);
 
         Button siguiente = new Button("Siguiente");
         siguiente.setPrefWidth(200);
@@ -102,12 +109,30 @@ public class VentanasIncioMecanico extends Application {
 
 
         TextField txtRut    = new TextField();  txtRut.setPromptText("Rut de empresa");
-        TextField txtMail   = new TextField();  txtMail.setPromptText("Correo electrónico empresa");
-        TextField txtFono   = new TextField();  txtFono.setPromptText("Número celular");
+        TextField txtNombreEmpresa   = new TextField();  txtNombreEmpresa.setPromptText("Nombre Empresa");
+        TextField txtTitulo   = new TextField();  txtTitulo.setPromptText("nivel Titulo");
+        TextField txtDireccionEmpresa   = new TextField();  txtDireccionEmpresa.setPromptText("Direccion Empresa");
+
+
+
+
+
+        /*
+        private String rutEmpresa;
+    private String nombreEmpresa;
+    private String nivelTitulo;
+    private String logoEmpresa;
+    private String direccionEmpresa;
+         */
+
+        String rutEmpresa  = txtRut.getText();
+
+
 
         txtRut .setMaxWidth(260);
-        txtMail.setMaxWidth(260);
-        txtFono.setMaxWidth(260);
+        txtNombreEmpresa.setMaxWidth(260);
+        txtTitulo.setMaxWidth(260);
+        txtDireccionEmpresa.setMaxWidth(260);
 
 
         VBox importBox = new VBox(5);
@@ -129,7 +154,7 @@ public class VentanasIncioMecanico extends Application {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg"));
             File f = fc.showOpenDialog(stage);
-
+            String logoEmpresa = f.getAbsolutePath();
         });
         Button btnAtras = new Button("Atrás");
         btnAtras.setOnAction(e -> start(stage));
@@ -152,7 +177,7 @@ public class VentanasIncioMecanico extends Application {
         botones.setAlignment(Pos.CENTER);
         formBox.getChildren().addAll(
                 lblTitulo, lblSubtitulo,
-                txtRut, txtMail, txtFono,
+                txtRut, txtNombreEmpresa, txtTitulo,txtDireccionEmpresa,
                 importBox,
                 botones
         );
@@ -285,7 +310,7 @@ public class VentanasIncioMecanico extends Application {
                 crearTarjetaProyecto()
         );
 
-        Label lblPaginacion = new Label("Página X de X  >>");  // Automatizar esto a ventanas.
+        Label lblPaginacion = new Label("Página X de X  >>");  
         lblPaginacion.setPadding(new Insets(10, 0, 0, 0));
 
         centerBox.getChildren().addAll(filtros, flowTarjetas, lblPaginacion);

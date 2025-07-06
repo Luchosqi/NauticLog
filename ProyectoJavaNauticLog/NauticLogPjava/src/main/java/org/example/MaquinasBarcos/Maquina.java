@@ -35,10 +35,7 @@ public abstract class Maquina implements Historial {
         System.out.println("Informe registrado: " + informe.getTitulo());
     }
 
-    @Override
-    public void registrarTrabajo() {
-        listaInformes.add(new Informe());
-    }
+
 
     public void buscarTrabajo(String tituloInforme) {
         for (Informe informe : listaInformes) {

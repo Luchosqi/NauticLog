@@ -20,7 +20,12 @@ public class BarcoFactory extends CreadorMaquina {
 
     @Override
     public Maquina crearMaquina(Collection<Informe> informes, Collection<Motor> motores, String nombre, Collection<Boleta> boletas) {
-        return new Barco(informes, motores, nombre, dueño, modelo, marca, boletas);
+        return new Barco(informes, motores, nombre, dueño, modelo, marca, boletas) {
+            @Override
+            public void registrarTrabajo() {
+
+            }
+        };
     }
 
 }

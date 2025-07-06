@@ -6,7 +6,7 @@ import org.example.PDF.Informe;
 
 import java.util.Collection;
 
-public class Barco extends Maquina {
+public abstract class Barco extends Maquina {
 
     private Cliente dueñoBarco;
     private String imagenBarco;

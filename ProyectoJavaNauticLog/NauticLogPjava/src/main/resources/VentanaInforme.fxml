@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.GluonVentana.VentanaInformeControlador" prefWidth="800" prefHeight="600">
+    <children>
+        <VBox spacing="10" alignment="TOP_CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+            <children>
+                <Label fx:id="etiquetaTitulo" text="Crear Informe" style="-fx-font-size: 24px;"/>
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <ComboBox fx:id="comboTipoObjeto" promptText="Tipo de objeto"/>
+                        <TextField fx:id="campoNombreObjeto" promptText="Nombre del objeto"/>
+                        <TextField fx:id="campoCantidad" promptText="Cantidad"/>
+                        <Button fx:id="botonAgregar" text="Agregar" onAction="#agregarObjeto"/>
+                    </children>
+                </HBox>
+                <ListView fx:id="listaObjetos" prefHeight="200"/>
+                <Label text="Descripcion del informe:"/>
+                <TextArea fx:id="campoDescripcion" prefRowCount="5" promptText="Descripcion del trabajo o actividad realizada"/>
+                <Button fx:id="botonGuardarInforme" text="Guardar Informe" onAction="#guardarInforme"/>
+            </children>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>
