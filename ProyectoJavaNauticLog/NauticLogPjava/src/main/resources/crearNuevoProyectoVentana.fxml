@@ -94,11 +94,11 @@
       <Button fx:id="cancelarButton" layoutX="118.0" layoutY="543.0" mnemonicParsing="false" onAction="#volverAlMenu" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #ffff; -fx-border-color: #dddd;" text="Cancelar" />
 
 
-      <Button layoutX="593.0" layoutY="543.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #507AB1;" text="Siguente" textFill="WHITE" />
-      <TextField layoutX="136.0" layoutY="366.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
-      <TextField layoutX="491.0" layoutY="287.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
-      <TextField layoutX="136.0" layoutY="287.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
-      <TextField layoutX="484.0" layoutY="366.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
-      <TextField layoutX="136.0" layoutY="444.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
+      <Button fx:id="siguienteButton" layoutX="593.0" layoutY="543.0" mnemonicParsing="false" onAction="#irAVentana2" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #507AB1;" text="Siguente" textFill="WHITE" />
+      <TextField fx:id="empresaField" layoutX="136.0" layoutY="366.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
+      <TextField fx:id="rutField" layoutX="491.0" layoutY="287.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
+      <TextField fx:id="nombreField" layoutX="136.0" layoutY="287.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
+      <TextField fx:id="correoField" layoutX="484.0" layoutY="366.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
+      <TextField fx:id="celularField" layoutX="136.0" layoutY="444.0" prefHeight="26.0" prefWidth="203.0" style="-fx-background-color: dddd;" />
    </children>
 </AnchorPane>

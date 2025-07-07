@@ -86,7 +86,7 @@ public class VentanasIncioMecanico extends Application {
         root.setSpacing(20);
         root.getChildren().addAll(formularioBox, imagenPane);
 
-        Scene scene = new Scene(root, 900, 500);
+        Scene scene = new Scene(root, 800, 600);
         primeraVentanaMecanicoRegistro.setTitle("Registro de Usuario");
         primeraVentanaMecanicoRegistro.setScene(scene);
         primeraVentanaMecanicoRegistro.show();
@@ -112,19 +112,6 @@ public class VentanasIncioMecanico extends Application {
         TextField txtNombreEmpresa   = new TextField();  txtNombreEmpresa.setPromptText("Nombre Empresa");
         TextField txtTitulo   = new TextField();  txtTitulo.setPromptText("nivel Titulo");
         TextField txtDireccionEmpresa   = new TextField();  txtDireccionEmpresa.setPromptText("Direccion Empresa");
-
-
-
-
-
-        /*
-        private String rutEmpresa;
-    private String nombreEmpresa;
-    private String nivelTitulo;
-    private String logoEmpresa;
-    private String direccionEmpresa;
-         */
-
         String rutEmpresa  = txtRut.getText();
 
 
@@ -191,9 +178,9 @@ public class VentanasIncioMecanico extends Application {
         HBox root = new HBox(30, formBox, imgPane);
         root.setPadding(new Insets(30));
 
-        stage.setScene(new Scene(root, 1280, 720));
-        stage.setMinWidth(1280);
-        stage.setMinHeight(720);
+        stage.setScene(new Scene(root, 800, 600));
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
 
         stage.setTitle("Registro Empresa de Usuario");
         stage.show();
@@ -269,7 +256,7 @@ public class VentanasIncioMecanico extends Application {
 
                 Stage nuevaVentana = new Stage();
                 nuevaVentana.setTitle("Crear Nuevo Proyecto");
-                nuevaVentana.setScene(new Scene(root));
+                nuevaVentana.setScene(new Scene(root, 800, 600));
                 nuevaVentana.show();
 
                 stage.close();  // cerrar ventana anterior

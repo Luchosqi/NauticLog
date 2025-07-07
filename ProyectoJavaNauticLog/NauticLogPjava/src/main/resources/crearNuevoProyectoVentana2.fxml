@@ -86,13 +86,12 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <BottomNavigation />
-            <Button layoutX="118.0" layoutY="543.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #ffff; -fx-border-color: #dddd;" text="Cancelar" />
-            <Button layoutX="593.0" layoutY="543.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #507AB1;" text="Siguente" textFill="WHITE" />
-            <TextField layoutX="134.0" layoutY="287.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
-            <TextField layoutX="132.0" layoutY="375.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
-            <TextField layoutX="492.0" layoutY="287.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
-            <TextField layoutX="492.0" layoutY="375.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
+            <Button fx:id="cancelarButton" layoutX="118.0" layoutY="543.0" mnemonicParsing="false" onAction="#volverAlMenu" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #ffff; -fx-border-color: #dddd;" text="Cancelar" />
+            <Button fx:id="siguienteButton" layoutX="593.0" layoutY="543.0" mnemonicParsing="false" onAction="#irAVentana3" prefHeight="26.0" prefWidth="144.0" style="-fx-background-color: #507AB1;" text="Siguente" textFill="WHITE" />
+            <TextField fx:id="nombreBarcoField" layoutX="134.0" layoutY="287.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
+            <TextField fx:id="modeloBarcoField" layoutX="132.0" layoutY="375.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
+            <TextField fx:id="motorField" layoutX="492.0" layoutY="287.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
+            <TextField fx:id="marcaBarcoField" layoutX="492.0" layoutY="375.0" prefHeight="26.0" prefWidth="228.0" style="-fx-background-color: #dddd;" />
          </children>
       </AnchorPane>
    </children>
