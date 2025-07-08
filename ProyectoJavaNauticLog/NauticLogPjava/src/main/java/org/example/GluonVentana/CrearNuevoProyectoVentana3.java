@@ -13,7 +13,7 @@ import org.example.PDF.Informe;
 import org.example.Persona.Cliente;
 import org.example.VentanasFx.VentanasIncioMecanico;
 import org.example.quillJs.EditorView;
-import org.example.quillJs.PDFExporter;
+import org.example.quillJs.QuillAPDF;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -141,13 +141,13 @@ public class CrearNuevoProyectoVentana3 {
         EditorView editorView = new EditorView();
 
         // Crear el exportador de PDF
-        PDFExporter pdfExporter = new PDFExporter();
+        QuillAPDF quillAPDF = new QuillAPDF();
 
         // Configurar la acción del botón de exportar
         editorView.getExportButton().setOnAction(e -> {
             try {
                 String htmlContent = editorView.getHtmlContent();
-                String outputPath = pdfExporter.exportToPDF(htmlContent, "facturas", 
+                String outputPath = quillAPDF.exportToPDF(htmlContent, "facturas",
                         "informe_" + nombreBarco + ".pdf");
                 System.out.println("PDF generado en: " + outputPath);
 

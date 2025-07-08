@@ -9,6 +9,7 @@ public class Mecanico extends Persona {
     private String nivelTitulo;
     private String logoEmpresa;
     private String direccionEmpresa;
+    private final int id=1;
 
     public Mecanico(String nombre, String correoElectronico, String numeroTelefonico) {
         super(nombre, correoElectronico, numeroTelefonico);

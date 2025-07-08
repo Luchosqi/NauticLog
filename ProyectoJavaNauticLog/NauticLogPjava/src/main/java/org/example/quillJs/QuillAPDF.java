@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Class responsible for exporting HTML content to PDF.
  */
-public class PDFExporter {
+public class QuillAPDF {
     private static final String DEFAULT_OUTPUT_DIR = "output";
     private static final String DEFAULT_FILENAME = "informe.pdf";
 
