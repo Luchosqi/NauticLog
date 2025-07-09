@@ -15,7 +15,8 @@ public class Mecanico extends Persona {
         super(nombre, correoElectronico, numeroTelefonico);
     }
 
-    public Mecanico(String nombre, String correoElectronico, String numeroTelefonico, String rutEmpresa, String nombreEmpresa, String nivelTitulo, String logoEmpresa, String direccionEmpresa) {
+    public Mecanico(String nombre, String correoElectronico, String numeroTelefonico, String rutEmpresa,
+                    String nombreEmpresa, String nivelTitulo, String logoEmpresa, String direccionEmpresa) {
         super(nombre, correoElectronico, numeroTelefonico);
         this.rutEmpresa = rutEmpresa;
         this.nombreEmpresa = nombreEmpresa;

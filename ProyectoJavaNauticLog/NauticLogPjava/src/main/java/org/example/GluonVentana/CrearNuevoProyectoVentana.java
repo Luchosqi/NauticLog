@@ -7,16 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.Persona.AlmacenamientoTemporal;
 import org.example.Persona.Cliente;
 import org.example.VentanasFx.VentanasIncioMecanico;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Controlador para la primera ventana de creación de un nuevo proyecto.
- * Esta ventana permite ingresar los datos del cliente.
- */
+
 public class CrearNuevoProyectoVentana {
 
     @FXML
@@ -43,19 +41,13 @@ public class CrearNuevoProyectoVentana {
     private Stage stageAnterior;
     private VentanasIncioMecanico app;
 
-    /**
-     * Establece los datos necesarios para volver a la ventana anterior.
-     * @param stageAnterior La ventana anterior
-     * @param app La aplicación principal
-     */
+
     public void setDatosDeRetorno(Stage stageAnterior, VentanasIncioMecanico app) {
         this.stageAnterior = stageAnterior;
         this.app = app;
     }
 
-    /**
-     * Vuelve al menú principal.
-     */
+
     @FXML
     private void volverAlMenu() {
         Stage actual = (Stage) cancelarButton.getScene().getWindow();
@@ -64,25 +56,29 @@ public class CrearNuevoProyectoVentana {
         app.interfazPrincipal(stageAnterior);
     }
 
-    /**
-     * Avanza a la segunda ventana de creación de proyecto.
-     * Crea un cliente con los datos ingresados y lo pasa a la siguiente ventana.
-     */
+
     @FXML
     private void irAVentana2() {
-        // Crear un cliente con los datos del formulario
+        AlmacenamientoTemporal.getInstancia().setDatosCliente(
+            nombreField.getText(),
+            rutField.getText(),
+            empresaField.getText(),
+            celularField.getText(),
+            correoField.getText()
+        );
+
         Cliente cliente = new Cliente(
                 nombreField.getText(),
                 correoField.getText(),
                 celularField.getText(),
-                new ArrayList<>() // Lista vacía de barcos
+                new ArrayList<>()
         );
+        app.setClienteActual(cliente);
+
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/crearNuevoProyectoVentana2.fxml"));
             Parent root = loader.load();
-
-            // Preparar el controlador para enviarle la ventana anterior y el cliente
             CrearNuevoProyectoVentana2 controlador = loader.getController();
             controlador.setDatosDeRetorno(stageAnterior, app, cliente);
 

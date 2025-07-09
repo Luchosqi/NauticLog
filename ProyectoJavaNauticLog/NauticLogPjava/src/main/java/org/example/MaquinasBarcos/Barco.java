@@ -20,6 +20,21 @@ public abstract class Barco extends Maquina {
         this.marca = marca;
     }
 
+    public Cliente getDueñoBarco() {
+        return dueñoBarco;
+    }
+
+    public String getImagenBarco() {
+        return imagenBarco;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
 
     @Override
     public String mostrarInformacion() {

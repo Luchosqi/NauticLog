@@ -16,6 +16,10 @@ public abstract class Persona {
 
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public String getCorreoElectronico() {
         return correoElectronico;
     }

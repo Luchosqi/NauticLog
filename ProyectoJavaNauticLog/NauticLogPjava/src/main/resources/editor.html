@@ -3,39 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-  <style>
-    body { margin: 0; font-family: Lao-Muang-Khong; }
-    .top-bar {
-      background-color: #0576e7;
-      color: white;
-      padding: 10px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-    .top-bar button {
-      background-color: #0576e7;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    #editor-container {
-      height: 400px;
-      background: white;
-      margin: 10px;
-    }
-  </style>
+
 </head>
 <body>
-<div class="top-bar">
-  <button onclick="addProduct()">Añadir productos</button>
-  <button onclick="addSupply()">Añadir insumos</button>
-  <button onclick="alert('Guardado')">Guardar</button>
-  <button onclick="exportToPDF()">Exportar a PDF</button>
-  <button onclick="javaConnector.volverAlMenu()">Volver al menú principal</button>
-</div>
+
 
 <div id="toolbar-container">
   <select class="ql-header">
@@ -63,11 +34,11 @@
   }
 
   function addProduct() {
-    // agregar un boton a una interfaz grafica que dirija a agregar producto
+    javaConnector.abrirFormularioProducto();
   }
 
   function addSupply() {
-    // agregar un boton a una interfaz grafica que dirija a agregar insumos
+    javaConnector.abrirFormularioInsumo();
   }
 
   function exportToPDF() {
@@ -78,6 +49,9 @@
     doc.save("documento.pdf"); // cambiar para que se guarde en una carpeta y con nombres distintos.
   }
 </script>
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>

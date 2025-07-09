@@ -1,23 +1,27 @@
 package org.example.quillJs;
 
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Button;
-import javafx.geometry.Insets;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import org.example.GluonVentana.InventarioUI;
 
 public class EditorView {
     private WebView webView;
     private WebEngine webEngine;
     private BorderPane rootPane;
-    private Button exportButton;
-    private Button backButton;
 
-    public EditorView() {
+    private Button botonVolver;
+    private Button botonAgregarInsumo;
+    private Button botonAgregarRepuesto;
+    private Button exportButton;
+
+    public EditorView(Stage stage) {
         initializeWebView();
-        initializeExportButton();
-        initializeBackButton();
+        initializeButtons(stage);
         setupLayout();
     }
 
@@ -27,25 +31,31 @@ public class EditorView {
         webEngine.load(getClass().getResource("/editor.html").toExternalForm());
     }
 
-
-    private void initializeBackButton() {
-        backButton = new Button("Volver");
-    }
-
-
-    private void initializeExportButton() {
+    private void initializeButtons(Stage stage) {
+        botonVolver = new Button("Volver");
+        botonAgregarInsumo = new Button("+ Agregar insumo");
+        botonAgregarRepuesto = new Button("+ Agregar repuesto");
         exportButton = new Button("Exportar a PDF");
-    }
 
+        InventarioUI inventarioUI = new InventarioUI();
+
+        botonAgregarInsumo.setOnAction(e -> inventarioUI.mostrarFormularioInsumo(stage));
+        botonAgregarRepuesto.setOnAction(e -> inventarioUI.mostrarFormularioRepuesto(stage));
+
+        botonVolver.setOnAction(e -> {
+            Stage ventana = (Stage) botonVolver.getScene().getWindow();
+            ventana.close();
+        });
+    }
 
     private void setupLayout() {
         rootPane = new BorderPane();
 
-        HBox topBar = new HBox(10); // Espacio entre botones
-        topBar.setPadding(new Insets(10));
-        topBar.getChildren().addAll(backButton, exportButton);
+        HBox barraSuperior = new HBox(10);
+        barraSuperior.setPadding(new Insets(10));
+        barraSuperior.getChildren().addAll(botonVolver, botonAgregarInsumo, botonAgregarRepuesto, exportButton);
 
-        rootPane.setTop(topBar);
+        rootPane.setTop(barraSuperior);
         rootPane.setCenter(webView);
     }
 
@@ -53,34 +63,18 @@ public class EditorView {
         return rootPane;
     }
 
+    public Button getBotonVolver() {
+        return botonVolver;
+    }
 
     public Button getExportButton() {
         return exportButton;
     }
 
-    /**
-     * Gets the back button to allow setting actions externally.
-     *
-     * @return The back button
-     */
-    public Button getBackButton() {
-        return backButton;
-    }
-
-    /**
-     * Gets the WebEngine to allow JavaScript execution.
-     *
-     * @return The WebEngine
-     */
     public WebEngine getWebEngine() {
         return webEngine;
     }
 
-    /**
-     * Gets the HTML content from the editor.
-     *
-     * @return The HTML content as a String
-     */
     public String getHtmlContent() {
         return (String) webEngine.executeScript("getHTML()");
     }

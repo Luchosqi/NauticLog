@@ -12,10 +12,6 @@ import org.example.VentanasFx.VentanasIncioMecanico;
 
 import java.io.IOException;
 
-/**
- * Controlador para la segunda ventana de creación de un nuevo proyecto.
- * Esta ventana permite ingresar los datos del barco.
- */
 public class CrearNuevoProyectoVentana2 {
 
     @FXML
@@ -39,23 +35,25 @@ public class CrearNuevoProyectoVentana2 {
     private Stage stageAnterior;
     private VentanasIncioMecanico app;
     private Cliente cliente;
+    private String nombreBarco;
+    private String modeloBarco;
+    private String marcaBarco;
+    private String motorBarco;
 
-    /**
-     * Establece los datos necesarios para volver a la ventana anterior y
-     * para pasar a la siguiente ventana.
-     * @param stageAnterior La ventana anterior
-     * @param app La aplicación principal
-     * @param cliente El cliente creado en la ventana anterior
-     */
+
     public void setDatosDeRetorno(Stage stageAnterior, VentanasIncioMecanico app, Cliente cliente) {
         this.stageAnterior = stageAnterior;
         this.app = app;
         this.cliente = cliente;
     }
 
-    /**
-     * Vuelve al menú principal.
-     */
+    public void setDatosBarco(String nombreBarco, String modeloBarco, String marcaBarco, String motorBarco) {
+        this.nombreBarco = nombreBarco;
+        this.modeloBarco = modeloBarco;
+        this.marcaBarco = marcaBarco;
+        this.motorBarco = motorBarco;
+    }
+
     @FXML
     private void volverAlMenu() {
         Stage actual = (Stage) cancelarButton.getScene().getWindow();
@@ -64,23 +62,26 @@ public class CrearNuevoProyectoVentana2 {
         app.interfazPrincipal(stageAnterior);
     }
 
-    /**
-     * Avanza a la tercera ventana de creación de proyecto.
-     * Pasa los datos del barco a la siguiente ventana.
-     */
     @FXML
     private void irAVentana3() {
+        org.example.Persona.AlmacenamientoTemporal.getInstancia().setDatosBarco(
+            nombreBarcoField.getText(),
+            modeloBarcoField.getText(),
+            marcaBarcoField.getText(),
+            motorField.getText()
+        );
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/crearNuevoProyectoVentana3.fxml"));
             Parent root = loader.load();
 
-            // Preparar el controlador para enviarle la ventana anterior, el cliente y los datos del barco
             CrearNuevoProyectoVentana3 controlador = loader.getController();
             controlador.setDatosDeRetorno(stageAnterior, app, cliente);
             controlador.setDatosBarco(
                 nombreBarcoField.getText(),
                 modeloBarcoField.getText(),
-                marcaBarcoField.getText()
+                marcaBarcoField.getText(),
+                motorField.getText()
             );
 
             Stage actual = (Stage) siguienteButton.getScene().getWindow();

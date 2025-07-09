@@ -14,13 +14,29 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.example.GluonVentana.CrearNuevoProyectoVentana;
+import org.example.GluonVentana.InventarioUI;
+import org.example.Inventario.GestorInventario;
+import org.example.Inventario.Insumo;
+import org.example.MaquinasBarcos.Barco;
+import org.example.MaquinasBarcos.Maquina;
+import org.example.PDF.Boleta;
+import org.example.Persona.AlmacenamientoTemporal;
+import org.example.Persona.Cliente;
 import org.example.Persona.Mecanico;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class VentanasIncioMecanico extends Application {
+    private Cliente clienteActual;
+
+    public void setClienteActual(Cliente cliente) {
+        this.clienteActual = cliente;
+    }
+
+
 
 
     @Override
@@ -40,35 +56,31 @@ public class VentanasIncioMecanico extends Application {
 
         TextField nombre = new TextField();
         nombre.setPromptText("Nombre de usuario");
-        String nombreMecanico = nombre.getText();
 
         TextField rut = new TextField();
         rut.setPromptText("Rut");
-        String rutMecanico = rut.getText();
 
         TextField correo = new TextField();
         correo.setPromptText("Correo electrónico");
-        String correoMecanico = correo.getText();
 
         TextField celular = new TextField();
         celular.setPromptText("Celular");
-        String celularMecanico = celular.getText();
-
-        Mecanico mecanicoPersona = new Mecanico(nombreMecanico,correoMecanico,celularMecanico);
 
         Button siguiente = new Button("Siguiente");
         siguiente.setPrefWidth(200);
         siguiente.setStyle("-fx-background-color: #2E2B4F; -fx-text-fill: white;");
         siguiente.setOnAction(event -> {
+            String nombreMecanico = nombre.getText();
+            String rutMecanico = rut.getText();
+            String correoMecanico = correo.getText();
+            String celularMecanico = celular.getText();
+            AlmacenamientoTemporal.getInstancia().setDatos(nombreMecanico, rutMecanico, correoMecanico, celularMecanico);
             Stage nuevaVentana = new Stage();
             siguienteRegistro2(nuevaVentana);
             ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
         });
 
-
         formularioBox.getChildren().addAll(titulo, subtitulo, nombre, rut, correo, celular, siguiente);
-
-
         Image imagen = new Image(getClass().getResource
                 ("/8484b30c8d363a0bdaabeb585b767a1772744d81.jpg").toExternalForm());
         ImageView imagenBarco = new ImageView(imagen);
@@ -243,23 +255,22 @@ public class VentanasIncioMecanico extends Application {
         HBox.setHgrow(lblTitulo, Priority.ALWAYS);
 
         HBox boxAcciones = new HBox(15);
-        // reemplazar estos 3 botones por el archivo grafico
+
         Button btnAgregarProyecto = crearBotonTop("Añadir proyecto");
         btnAgregarProyecto.setOnAction(e -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/crearNuevoProyectoVentana.fxml"));
                 Parent root = loader.load();
 
-                // Preparar el controlador para enviarle la ventana anterior
                 CrearNuevoProyectoVentana controlador = loader.getController();
-                controlador.setDatosDeRetorno(stage, this);  // le pasamos el Stage y la app actual
+                controlador.setDatosDeRetorno(stage, this);
 
                 Stage nuevaVentana = new Stage();
                 nuevaVentana.setTitle("Crear Nuevo Proyecto");
                 nuevaVentana.setScene(new Scene(root, 800, 600));
                 nuevaVentana.show();
 
-                stage.close();  // cerrar ventana anterior
+                stage.close();
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -270,8 +281,18 @@ public class VentanasIncioMecanico extends Application {
 
 
         Button btnGenerarFactura  = crearBotonTop("Generar Factura");
+
+        btnGenerarFactura.setOnAction(e -> {
+            mostrarSelectorProyectoYGenerarFactura(stage);
+        });
+
         Button btnInventario      = crearBotonTop("Inventario general");
         boxAcciones.getChildren().addAll(btnAgregarProyecto, btnGenerarFactura, btnInventario);
+        btnInventario.setOnAction(ev -> {
+            InventarioUI inventarioUI = new InventarioUI();
+            inventarioUI.mostrarListaInventario(stage);
+        });
+
 
         topBar.getChildren().addAll(lblTitulo, boxAcciones);
 
@@ -292,10 +313,19 @@ public class VentanasIncioMecanico extends Application {
         filtros.getChildren().addAll(tfFecha, tfCliente, tfNombre, btnFiltrar);
 
         FlowPane flowTarjetas = new FlowPane(Orientation.HORIZONTAL, 25, 25);
-        flowTarjetas.getChildren().addAll(
-                crearTarjetaProyecto(),   // borrar estas tarjetas
-                crearTarjetaProyecto()
-        );
+
+        String correoCliente = AlmacenamientoTemporal.getInstancia().getCorreoCliente();
+
+
+
+        if (clienteActual != null) {
+            for (Maquina m : clienteActual.getListaBarcos()) {
+                flowTarjetas.getChildren().add(crearTarjetaProyecto(m));
+            }
+        } else {
+            System.out.println("No hay cliente cargado");
+        }
+
 
         Label lblPaginacion = new Label("Página X de X  >>");  
         lblPaginacion.setPadding(new Insets(10, 0, 0, 0));
@@ -340,32 +370,87 @@ public class VentanasIncioMecanico extends Application {
         return b;
     }
 
-    private VBox crearTarjetaProyecto() {
+
+    private VBox crearTarjetaProyecto(Maquina barco) {
         VBox card = new VBox(8);
         card.setPadding(new Insets(15));
         card.setPrefSize(220, 160);
         card.setStyle("""
-            -fx-background-color:#F2F2F2;
-            -fx-background-radius:10;""");
+        -fx-background-color:#F2F2F2;
+        -fx-background-radius:10;""");
 
         CheckBox chk = new CheckBox();
-        Label nombreProyecto = new Label("Nombre Proyecto");
-        Label nombreCliente = new Label("Cliente X");
-        Label fechadeProyecto = new Label(LocalDate.now().toString());
+        Label nombreProyecto = new Label("Proyecto: " + barco.getNombre());
+        Barco barcoReal = (Barco) barco;
 
-        Button btnEditar  = new Button("Editar");      // reemplazar
-        btnEditar.setStyle("-fx-background-color:#1E1B3F; -fx-text-fill:white;");
+        Label modelo = new Label("Modelo: " + barcoReal.getModelo());
+        Label marca  = new Label("Marca: " + barcoReal.getMarca());
+        Label dueño  = new Label("Dueño: " + barcoReal.getDueñoBarco().getNombre());
 
-        Button btnConfig  = new Button();              // poner engranaje
-        btnConfig.setPrefSize(22, 22);
 
-        Button btnImagen  = new Button();              // poner elicono de camara
-        btnImagen.setPrefSize(22, 22);
+        Button btnVer = new Button("Ver detalles");
+        btnVer.setStyle("-fx-background-color:#1E1B3F; -fx-text-fill:white;");
 
-        HBox boxBtns = new HBox(8, btnEditar, btnConfig, btnImagen);
-        card.getChildren().addAll(chk, nombreProyecto, nombreCliente, fechadeProyecto, boxBtns);
+        btnVer.setOnAction(e -> {
+
+            System.out.println("Detalles de: " + barco.getNombre());
+        });
+        LocalDate fecha = LocalDate.now();
+        Label fechaLabel = new Label("Fecha: " + fecha.toString());
+        card.getChildren().addAll(chk, nombreProyecto, modelo, fechaLabel, btnVer);
         return card;
     }
+
+    private void mostrarSelectorProyectoYGenerarFactura(Stage stage) {
+        VBox root = new VBox(15);
+        root.setPadding(new Insets(30));
+
+        Label titulo = new Label("Selecciona un proyecto para generar la factura");
+        ComboBox<Maquina> comboProyectos = new ComboBox<>();
+
+        if (clienteActual != null) {
+            comboProyectos.getItems().addAll(clienteActual.getListaBarcos());
+        }
+
+        Button btnGenerar = new Button("Generar Factura");
+        btnGenerar.setStyle("-fx-background-color: #1E1B3F; -fx-text-fill: white;");
+
+        btnGenerar.setOnAction(e -> {
+            Maquina barcoSeleccionado = comboProyectos.getValue();
+            if (barcoSeleccionado != null) {
+                generarFacturaPDF(barcoSeleccionado);
+                interfazPrincipal(stage);
+            }
+        });
+
+        Button btnCancelar = new Button("Cancelar");
+        btnCancelar.setOnAction(e -> interfazPrincipal(stage));
+
+        root.getChildren().addAll(titulo, comboProyectos, btnGenerar, btnCancelar);
+        Scene scene = new Scene(root, 500, 300);
+        stage.setScene(scene);
+        stage.setTitle("Generar Factura");
+        stage.show();
+    }
+    private void generarFacturaPDF(Maquina barco) {
+        Boleta boleta = new Boleta();
+
+        Cliente cliente = clienteActual;
+        Mecanico mecanico = new Mecanico(
+                AlmacenamientoTemporal.getInstancia().getNombre(),
+                AlmacenamientoTemporal.getInstancia().getCorreo(),
+                AlmacenamientoTemporal.getInstancia().getCelular()
+        );
+
+        mecanico.setDireccionEmpresa("Dirección ficticia");
+
+        List<Insumo> insumos = GestorInventario.getInstancia().obtenerInsumos();
+
+        boleta.generarFactura(mecanico, (Barco) barco, cliente, insumos);
+    }
+
+
+
 
 
 

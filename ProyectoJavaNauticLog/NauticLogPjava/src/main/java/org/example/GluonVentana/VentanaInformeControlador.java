@@ -55,7 +55,6 @@ public class VentanaInformeControlador {
 
     @FXML
     private void guardarInforme() {
-        // Aqui se conectaria con la logica de backend para guardar
         System.out.println("Informe guardado con " + listaObjetos.getItems().size() + " objetos");
         System.out.println("Descripcion: " + campoDescripcion.getText());
     }

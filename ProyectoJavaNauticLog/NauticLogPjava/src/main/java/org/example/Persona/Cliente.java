@@ -42,10 +42,14 @@ public class Cliente extends Persona {
         }
     }
 
+    public Maquina[] getListaBarcos() {
+        Maquina[] barcosArray = new Maquina[listaBarcos.size()];
+        return listaBarcos.toArray(barcosArray);
+    }
+
     @Override
     public String toString() {
-        return "Cliente{" +
-                "listaBarcos=" + listaBarcos +
-                '}';
+        return "Cliente: " + getNombre();
     }
+
 }

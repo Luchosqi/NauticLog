@@ -102,4 +102,9 @@ public abstract class Maquina implements Historial {
             System.out.println(motor.toString());
         }
     }
+    @Override
+    public String toString() {
+        return getNombre(); // así el ComboBox muestra nombre del barco
+    }
+
 }
